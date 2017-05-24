@@ -64,17 +64,15 @@ class TextAreaComp extends Component
     };    
 
     this.handleChange = this.handleChange.bind(this);
-    this.compareTexts = this.compareTexts.bind(this);
+  
   }
 
 
-  handleChange(event) {    
+  handleChange(event) {  
+
   	var text = event.target.value;
     this.setState({value: text});
-    this.compareTexts();    
-  }
-
-  compareTexts() {
+ 
 	  var text1 = String(this.state.value);
 	  const text2 = String(this.state.originalText);
     var counter = this.state.counter;
@@ -94,8 +92,9 @@ class TextAreaComp extends Component
       return; // Don't save any new letters
     }
 
+    // Get the last character to compare
     var index = text1.length-1;
-    var letter1 = text1.charAt(index);
+    var letter1 = text1.charAt(index); 
     var letter2 = text2.charAt(index);
 
     // No new letters?
@@ -105,6 +104,7 @@ class TextAreaComp extends Component
     // Last letter was deleted?
     if (letterArray.length > text1.length) {
       letterArray.pop();
+      this.setState({letterAmount: --letterAmount});
       return;
     }
     var letterAmount = this.state.letterAmount;
@@ -122,7 +122,10 @@ class TextAreaComp extends Component
       
 	  }
     // lettercolor 
-	  this.setState({letterArray: letterArray});
+	  this.setState({letterArray: letterArray},() => {
+      this.forceUpdate();
+    });
+    
   }
 
   render() {
