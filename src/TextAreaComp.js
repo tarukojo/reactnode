@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css'
 
-const textValue = "Testilause tässä";
+const textArray = ["Testilause tässä", "Toinen lause", "Hirmusen vaikea lause"];
 
 function Letter(props) {
 	const item = props.letter;
@@ -44,7 +44,9 @@ function Feedback(props) {
     text = "";
   }
   return (
-    <div>{text}</div>
+    <div>
+    {text}
+    </div>
     );
 }
 
@@ -54,7 +56,7 @@ class TextAreaComp extends Component
   constructor(props) {
     super(props);
     this.state = {
-      originalText: textValue,
+      originalText: textArray[0],
       value: '',
       color: "green",
       counter: 0,
@@ -70,68 +72,51 @@ class TextAreaComp extends Component
 
   handleChange(event) {  
 
-  	var text = event.target.value;
-    this.setState({value: text});
- 
-	  var text1 = String(this.state.value);
-	  const text2 = String(this.state.originalText);
-    var counter = this.state.counter;
+  	var text1 = event.target.value;
+    this.setState({value: text1});
 
-    var letterArray = this.state.letterArray;
+	  const text2 = String(this.state.originalText);
 
     var length1 = text1.length; 
     var length2 = text2.length;
 
-	  if (length1 >= length2-1) {
-		  this.setState({showNext: true});
-  	} 
-    if (length1 > length2) {
-      this.setState({color: "red"});
-      text1.pop();
-      this.setState({value: text1});
-      return; // Don't save any new letters
+    var arrayLetters = [];
+    var newColor = "green";
+    var counterVal = 0;
+
+    for (var i=0; i < text1.length && i < text2.length; i++) {
+       if (text1.charAt(i) == text2.charAt(i)) {
+          arrayLetters.push(['green',text1.charAt(i)]);          
+       } else {
+          arrayLetters.push(['red',text1.charAt(i)]);
+          newColor = "red";
+          ++counterVal;
+       }
+    }
+    if (text1.length > text2.length) {
+      for (var j = text2.length-1; j < text1.length; j++) {
+         arrayLetters.push(['red', text1.charAt(j)]);
+         newColor = "red";
+          ++counterVal;
+      }
     }
 
-    // Get the last character to compare
-    var index = text1.length-1;
-    var letter1 = text1.charAt(index); 
-    var letter2 = text2.charAt(index);
-
-    // No new letters?
-    if (letterArray.length == text1.length) {
-      return;
+    // Text completed?
+    if (length1 >= length2 && newColor == "green") {
+      this.setState({showNext: true});
     } 
-    // Last letter was deleted?
-    if (letterArray.length > text1.length) {
-      letterArray.pop();
-      this.setState({letterAmount: --letterAmount});
-      return;
-    }
-    var letterAmount = this.state.letterAmount;
-    if (letterArray.length < text1.length) {
-      this.setState({letterAmount: ++letterAmount});
-    }
 
-	  if (letter1 == letter2) {
-      this.setState({color: "green"});
-		  letterArray.push(['green',letter1]);
-	  } else {
-      this.setState({color: "red"});
-      this.setState({counter: ++counter});
-		  letterArray.push(['red', letter1]);
-      
-	  }
-    // lettercolor 
-	  this.setState({letterArray: letterArray},() => {
-      this.forceUpdate();
-    });
-    
+    this.setState({color: newColor})
+    this.setState({letterAmount: text1.length});
+    this.setState({counter: counterVal});
+    this.setState({letterArray: arrayLetters});
   }
+
 
   render() {
 
     return (    		
-  			<div>
+  			<div className="writingexercise">
   			{this.state.originalText}
   			<br />
     	 	<input id="writingarea" value={this.state.value} onChange={this.handleChange} />

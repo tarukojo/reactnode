@@ -16,7 +16,7 @@ class App extends Component {
           <br/>
           <div className="App-text">
           Tämä on React.js:llä toteutettu kirjoitusharjoitus.<br/> 
-          Kirjoita alla olevat lause oikein. Jos se menee oikein, teksti on vihreää, jos väärin, punaista.         
+          Kirjoita alla oleva lause oikein. Jos se menee oikein, teksti on vihreää, jos väärin, punaista.        
           </div>
           <br/>
         </div>

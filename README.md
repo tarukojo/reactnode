@@ -13,12 +13,7 @@ Tests:
 Run the tests by typing "npm test".
 
 Limitations:
-- The typing is checked only the last character in the end of the typed sentence.
 - Only one sentence is provided.
-
-Known bugs:
-- The letters and feedback appear into the screen one letter behind the typing.
-- "Seuraava" button is not giving the next sentence because this feature is not implemented yet (see Future features). It only nulls everything.
 
 Future features:
 - Administrator of the application can insert new sentences that the user can then exercise to write.
